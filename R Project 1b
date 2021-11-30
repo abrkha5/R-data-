@@ -1,0 +1,41 @@
+AllianceHealing <- read.csv("Dataset_AllianceHealing.csv")
+allianceDelayed <- AllianceHealing$Healing_Done
+HordeHealing <- read.csv("Dataset_HordeHealing.csv")
+hordeDelayed <- HordeHealing$healing_done
+hist(allianceDelayed, ylim = c(0,70), breaks = seq(0, 40000, by = 5000))
+
+#2b
+#The histogram is not syymetric and it is skewed to the right 
+fivenum(allianceDelayed)
+#min = 0
+#first quartile = 5377
+#median = 10808
+#third quartile = 18108
+#max = 39026
+mean(allianceDelayed) # mean= 12908.7
+sd(allianceDelayed) # SD = 9692.992
+
+#3
+t.test(AllianceHealing,HordeHealing, conf.level = .939, mu = 500, alternative =
+         "greater")
+
+#3a
+# Null Hypothesis is equal to 500. 
+# alternative hypothesis is greater than 500.
+
+#data:  AllianceHealing and HordeHealing
+#t = 1.6126, df = 552.08, p-value = 0.0537
+#alternative hypothesis: true difference in means is greater than 500
+#93.9 percent confidence interval:
+ # 548.2763      Inf
+#sample estimates:
+#  mean of x mean of y 
+#12908.70  11188.69 
+
+#test statistic  = (x - mean) / (sd / sqrt(n))
+# df = n - 1 
+
+qt(p= .061/2, df=552.08, lower.tail=FALSE) # critical value = (+-1.877)
+
+#critical region (-infinity, -1.8773] U [1.8773, infinity)
+
