@@ -1,0 +1,137 @@
+#Part 1
+AH<-read.csv("Dataset_AllianceHealing.csv")
+HH<-read.csv("Dataset_HordeHealing.csv")
+
+# part 2 (a) Histogram of Heading Done
+breaks=c(0,5000,10000,15000,20000,25000,30000,35000,40000)
+hist(AH$Healing_Done,
+     main="Histogram of Alliance Faction Healing",
+     xlab="Healing Done",
+     ylim=c(0,70),
+     breaks)
+
+#2(b)
+#The histogram has a longer tail towards the right side. Hence, the distribution
+#of Alliance Faction heading_done is not Symmetric but Rightly Skewed.
+#The histogram is having frequency=70 for the range [5000,10000), and the rest of
+#the frequencies are less than 70. Hence, the histogram is Unimodal as it is a 
+#single-mode at [5000,10000).
+
+#2(c) Five Number Summary of the Data
+summary(AH$Healing_Done)
+# min= 0 
+# 1st quartile = 5380
+# median = 10808
+# mean = 12909
+# 3rd quartile = 18097
+# Max = 39026
+
+#2(d) Report Sample Mean, Standard Deviation, Sample Size
+print(paste("Sample Mean: ", mean(AH$Healing_Done))) # mean = 12908.697
+print(paste("Sample Standard Deviation: ", sd(AH$Healing_Done))) # SD = 9692.992
+print(paste("Sample Size: ", nrow(AH))) # Sample Size = 294 
+
+#2(e)
+#If the sample size is large (n>30), the central limit theorem states that the 
+#sampling distribution of the sample means approaches to normal distribution. As
+#the sample size is large enough, we do not have any issues in considering the 
+#sampling distribution of the sample mean of Alliance Faction Headling done to be
+#Normal.
+
+
+#3(a)
+#If µ_1 represents the population mean of Alliance Faction healing done and µ_2
+#represents the population means of Horde Faction healing done, then the 
+#hypothesis is:
+#H_0: µ_1-µ_2=500
+#H_a: µ_1-µ_2>500
+#As the sample size of both the sampling distribution is large 
+#(for Horde Faction, the sample size is 262), the distribution can be 
+#approximated to normal. The population variance of the Alliance
+#Faction Holding done and Horde Faction holding done is Unknown. Therefore, a
+#one-tail independent sample t-test is used.
+
+
+
+#Q3: 3(ii)
+x<-AH$Healing_Done
+y<-HH$Healing_Done
+ttest<-t.test(x,y, mu=500,alternative="greater", conf.level=1-0.061)
+
+
+#3(iii)
+#data:  x and y
+#t = 1.6126, df = 552.08, p-value = 0.0537
+#alternative hypothesis: true difference in means is greater than 500
+#93.9 percent confidence interval:
+#  548.2763      Inf
+#sample estimates:
+#  mean of x mean of y 
+#12908.70  11188.69 
+
+
+
+#3(iv)
+#Test Statistics
+ttest$statistic
+# t = 1.613
+#t.test(x,y, mu=500,alternative="greater" , conf.level=1-0.061)$statistic #Test Statistic
+
+# Degree of Freedom
+ttest$parameter
+#df = 552.075
+#t.test(x,y, mu=500,alternative="greater" , conf.level=1-0.061)$parameter #Formula Degree of Freedom 
+
+#P-value
+ttest$p.value
+#P-value = .054
+
+# 3(v)
+#Critical Value
+qt(1-0.061,ttest$parameter)
+#critcal value = 1.549
+
+#3 (vi)
+#The critical region is [1.549, infinity)
+
+#3 (vii)
+#The test statistics fall in the critical region; hence, the null hypothesis 
+#is rejected. It is concluded that we have statistical evidence that the average 
+#number of healings done for the Alliance Faction is higher than the average 
+#number of healings done for the Horde Faction by more than 500.
+
+#3 (viii)
+
+#The p-value of the test statistics is p= 0.05369882
+#t.test(x,y, mu=500,alternative="greater" , conf.level=1-0.061)$p.value (CI formula)
+
+#As the p-value is less than 0.061 level of significance, the null hypothesis 
+#is rejected, and it is concluded that the average number of healings done for 
+#the Alliance Faction is higher than the average number of healings done for the 
+#Horde Faction by more than 500.
+
+
+
+#3(b)Confidence Interval
+ttest$conf.int
+# CI = .939 
+
+#The 93.9% confidence interval for the right-tailed two-sample t-test is 
+#[548.276,infinity)
+
+#The formula to calculate the confidence interval:
+#t.test(x,y, mu=500,alternative="greater", conf.level=1-0.061)$conf.int
+
+#A confidence interval is a measure of certainty in a sampling method. 
+#It displays the likelihood of falling of the population mean within an interval.
+#If sampling is done 100 times, then a 95% confidence interval is
+#the interval in which the value of the estimate will fall 95 times.
+#The 93.9% confidence interval has a lower bound of 548.2763, and since the test
+#is right-tailed, the upper bound is infinity. We are 93.9% sure that the
+#population mean-difference between the Alliance Faction Holding done and the
+#Horde Faction holding done is above 548.2763. The confidence 
+#interval does not include the null parameter(500); the null hypothesis is
+#rejected. In conclusion, the average number of healing done for the 
+#Alliance Faction is higher than the average number of healing done for the 
+#Horde Faction by more than 500.
+
